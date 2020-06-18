@@ -11,31 +11,78 @@
 //
 
 import UIKit
+import Realm
 
-protocol loginBusinessLogic
+protocol LoginBusinessLogic
 {
-  func doSomething(request: login.Something.Request)
+  func doSomething(request: Login.Request)
 }
 
-protocol loginDataStore
-{
-  //var name: String { get set }
+
+protocol LoginDataStore {
+    var user: UserRealm? { get set }
 }
 
-class loginInteractor: loginBusinessLogic, loginDataStore
+class LoginInteractor: LoginBusinessLogic, LoginDataStore
 {
-  var presenter: loginPresentationLogic?
-  var worker: loginWorker?
-  //var name: String = ""
+    var presenter: LoginPresentationLogic?
+    var repository: LoginRepository?
+    var user: UserRealm?
+    
+    private lazy var realmRepository: RealmRepository = {
+        let manager = RealmRepository()
+        return manager
+    }()
+    
+    
   
+    init(repository: LoginRepositoryProtocol = LoginRepository.shared){
+        self.repository = repository as! LoginRepository
+    }
+    
+    
+    func getLastUser() {
+        guard let user = realmRepository.getObj() else {
+            return
+        }
+        self.user = user
+        presenter?.presentLastUser(user: user)
+   }
+    
+    
   // MARK: Do something
   
-  func doSomething(request: login.Something.Request)
+  func doSomething(request: Login.Request)
   {
-    worker = loginWorker()
-    worker?.doSomeWork()
+    repository = LoginRepository()
+    repository?.getRequestUser(request: request, completion: {[weak self]  (result) in
+        switch result{
+        case .success(let value):
+            let response = Login.Response(user: value)
+            self?.setupResponse(response: response, userName: request.username)
+        case .failure(let error):
+            self?.presenter?.presentError(error: error)
+        }
+    })
     
-    let response = login.Something.Response()
-    presenter?.presentSomething(response: response)
+//    let response = Login
+//        .Response(user: name)
+//    presenter?.presentSomething(response: response)
   }
+    
+    private func setupResponse( response: Login.Response, userName: String){
+        let newUser = UserRealm()
+        newUser.userId = "\(response.user?.userAccount.userId ?? 0)"
+        newUser.account = "\(response.user?.userAccount.agency ?? "") / \(response.user?.userAccount.bankAccount ?? "")"
+        newUser.balance = "R$ \(response.user?.userAccount.balance ?? 0)"
+        newUser.name = response.user?.userAccount.name ?? ""
+        newUser.username = userName
+        if let user = self.user {
+           realmRepository.updateObj(obj: user)
+        } else {
+           self.user = newUser
+           realmRepository.saveObjc(obj: newUser)
+        }
+        presenter?.presentSomething(response: response)
+    }
 }

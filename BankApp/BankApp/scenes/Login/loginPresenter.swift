@@ -11,21 +11,37 @@
 //
 
 import UIKit
+import Alamofire
 
-protocol loginPresentationLogic
+protocol LoginPresentationLogic
 {
-  func presentSomething(response: login.Something.Response)
+  func presentLastUser(user: UserRealm)
+  func presentError(error: AFError)
+  func presentSomething(response: Login.Response)
 }
 
-class loginPresenter: loginPresentationLogic
+class LoginPresenter: LoginPresentationLogic
 {
-  weak var viewController: loginDisplayLogic?
+   
+   
+  weak var viewController: LoginDisplay?
   
   // MARK: Do something
   
-  func presentSomething(response: login.Something.Response)
-  {
-    let viewModel = login.Something.ViewModel()
-    viewController?.displaySomething(viewModel: viewModel)
-  }
+    func presentLastUser(user: UserRealm) {
+        
+    }
+
+
+    func presentError(error: AFError) {
+      
+    }
+          
+    
+    
+    
+    func presentSomething(response: Login.Response){
+        let viewModel = Login.ViewModel()
+        viewController?.displayHome(viewModel: viewModel)
+    }
 }

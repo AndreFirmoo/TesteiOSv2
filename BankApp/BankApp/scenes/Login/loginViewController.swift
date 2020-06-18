@@ -12,78 +12,81 @@
 
 import UIKit
 
-protocol loginDisplayLogic: class
+protocol LoginDisplay: class
 {
-  func displaySomething(viewModel: login.Something.ViewModel)
+    func showError(error: String)
+    func setupUser(user: UserRealm)
+    func displayHome(viewModel: Login.ViewModel)
 }
 
-class loginViewController: UIViewController, loginDisplayLogic
-{
-  var interactor: loginBusinessLogic?
-  var router: (NSObjectProtocol & loginRoutingLogic & loginDataPassing)?
+class LoginViewController: UIViewController{
+    
+    //MARK: - IBOutlet
+    
+    @IBOutlet weak var userNameLb: UITextField!
+    
+    @IBOutlet weak var passwordLb: UITextField!
+    
+    
+    //MARK: - Variables
+  
+    var router: LoginRouter
+    private var interactor: LoginInteractor
+    private var presenter: LoginPresenter
 
-  // MARK: Object lifecycle
-  
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)
-  {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    setup()
-  }
-  
-  required init?(coder aDecoder: NSCoder)
-  {
-    super.init(coder: aDecoder)
-    setup()
-  }
-  
-  // MARK: Setup
-  
-  private func setup()
-  {
-    let viewController = self
-    let interactor = loginInteractor()
-    let presenter = loginPresenter()
-    let router = loginRouter()
-    viewController.interactor = interactor
-    viewController.router = router
-    interactor.presenter = presenter
-    presenter.viewController = viewController
-    router.viewController = viewController
-    router.dataStore = interactor
-  }
-  
-  // MARK: Routing
-  
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?)
-  {
-    if let scene = segue.identifier {
-      let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
-      if let router = router, router.responds(to: selector) {
-        router.perform(selector, with: segue)
-      }
+    //MARK: - Initializer
+    
+    init(interactor: LoginInteractor, router: LoginRouter, presenter: LoginPresenter) {
+        self.interactor = interactor
+        self.interactor.presenter = presenter
+        self.presenter = presenter
+        self.router = router
+        super.init(nibName: nil, bundle: nil)
     }
-  }
-  
-  // MARK: View lifecycle
-  
-  override func viewDidLoad()
-  {
-    super.viewDidLoad()
-    doSomething()
-  }
-  
-  // MARK: Do something
-  
-  //@IBOutlet weak var nameTextField: UITextField!
-  
-  func doSomething()
-  {
-    let request = login.Something.Request()
-    interactor?.doSomething(request: request)
-  }
-  
-  func displaySomething(viewModel: login.Something.ViewModel)
-  {
-    //nameTextField.text = viewModel.name
-  }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+   // MARK: -  Object lifecycle
+    override func viewDidLoad() {
+       super.viewDidLoad()
+       setup()
+    }
+    
+    // MARK:  - Setup()
+    private func setup(){
+        presenter.viewController = self
+        interactor.getLastUser()
+    }
+    
+    //MARK: - IBACTION
+    
+    @IBAction func login(_ sender: Any) {
+        let request = Login.Request(username: userNameLb.text ?? "", password: passwordLb.text ?? "")
+        interactor.doSomething(request: request)
+    }
+    
+    func login(){
+        if let user = interactor.user{
+            router.routeToSomewhere(login: self, user: user)
+        }
+    }
+    
+    
+}
+
+extension LoginViewController: LoginDisplay{
+    
+    func showError(error: String){
+        
+    }
+    func setupUser(user: UserRealm){
+        
+    }
+    func displayHome(viewModel: Login.ViewModel){
+        
+    }
+    
+    
 }

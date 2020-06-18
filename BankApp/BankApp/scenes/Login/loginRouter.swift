@@ -10,51 +10,34 @@
 //  see http://clean-swift.com
 //
 
+import Foundation
 import UIKit
 
-@objc protocol loginRoutingLogic
-{
-  //func routeToSomewhere(segue: UIStoryboardSegue?)
+@objc protocol LoginRoutingLogic {
+    func routeToSomewhere(login: LoginViewController, user: UserRealm)
 }
 
-protocol loginDataPassing
-{
-  var dataStore: loginDataStore? { get }
+protocol LoginDataPassing {
+    var dataStore: LoginDataStore? { get }
 }
 
-class loginRouter: NSObject, loginRoutingLogic, loginDataPassing
-{
-  weak var viewController: loginViewController?
-  var dataStore: loginDataStore?
-  
-  // MARK: Routing
-  
-  //func routeToSomewhere(segue: UIStoryboardSegue?)
-  //{
-  //  if let segue = segue {
-  //    let destinationVC = segue.destination as! SomewhereViewController
-  //    var destinationDS = destinationVC.router!.dataStore!
-  //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-  //  } else {
-  //    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-  //    let destinationVC = storyboard.instantiateViewController(withIdentifier: "SomewhereViewController") as! SomewhereViewController
-  //    var destinationDS = destinationVC.router!.dataStore!
-  //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-  //    navigateToSomewhere(source: viewController!, destination: destinationVC)
-  //  }
-  //}
+class LoginRouter: NSObject, LoginRoutingLogic, LoginDataPassing {
+    func routeToSomewhere(login: LoginViewController, user: UserRealm) {
+        
+    }
+    
+    var dataStore: LoginDataStore?
 
-  // MARK: Navigation
-  
-  //func navigateToSomewhere(source: loginViewController, destination: SomewhereViewController)
-  //{
-  //  source.show(destination, sender: nil)
-  //}
-  
-  // MARK: Passing data
-  
-  //func passDataToSomewhere(source: loginDataStore, destination: inout SomewhereDataStore)
-  //{
-  //  destination.name = source.name
-  //}
+    var navigationController: UIViewController
+
+    init(navigationController: UIViewController) {
+        self.navigationController = navigationController
+    }
+  // MARK: Routing and navigation
+
+//    func routeToSomewhere(login: LoginViewController, user: UserRealm) {
+//        login.dismiss(animated: false, completion: nil)
+//        let homeViewController = HomeViewController(interactor: HomeInteractor(worker: HomeRepository(), user: user), router: HomeRouter(navigationController: navigationController), presenter: HomePresenter())
+//        navigationController.present(homeViewController, animated: false, completion: nil)
+//  }
 }
