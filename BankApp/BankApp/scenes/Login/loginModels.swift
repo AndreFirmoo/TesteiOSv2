@@ -12,20 +12,17 @@
 
 import UIKit
 
-enum login
-{
+enum Login {
   // MARK: Use cases
-  
-  enum Something
-  {
-    struct Request
-    {
+    struct Request {
+        let username: String
+        let password: String
     }
-    struct Response
-    {
+    struct Response {
+        let user: UserMapper?
     }
-    struct ViewModel
-    {
+    
+    struct ViewModel {
+        
     }
-  }
 }
