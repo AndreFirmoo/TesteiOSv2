@@ -10,15 +10,16 @@ import UIKit
 
 class HomeTableViewCell: UITableViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
+    @IBOutlet weak var itemTypeLabel: UILabel!
+    @IBOutlet weak var itemTitleLabel: UILabel!
+    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var dataLabel: UILabel!
     
+    
+    func prepare(statement: Statement){
+        itemTypeLabel.text = statement.title
+        itemTitleLabel.text = statement.desc
+        dataLabel.text = statement.date
+        priceLabel.text = "\(statement.value)"
+    }
 }
