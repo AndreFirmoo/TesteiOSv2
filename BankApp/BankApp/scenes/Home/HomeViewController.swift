@@ -14,43 +14,88 @@ import UIKit
 
 protocol HomeDisplayLogic: class
 {
-  func displaySomething(viewModel: Home.Something.ViewModel)
+  func displaySomething(viewModel: Home.ViewModel)
 }
 
-class HomeViewController: UIViewController, HomeDisplayLogic
-{
+class HomeViewController: UIViewController, HomeDisplayLogic{
+   
+    
+    
 
-  // MARK: Object lifecycle
+    
+  //MARK: - IBOutlet
+    
+    @IBOutlet weak var userNameLb: UILabel!
+    
+    @IBOutlet weak var userAccontLb: UILabel!
+    
+    @IBOutlet weak var userBalanceLb: UILabel!
+    
+    @IBOutlet weak var tableview: UITableView!
+    
+  // MARK: - Object lifecycle
   
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?){
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    var router: HomeRouter
+    private var interector: HomeInteractor
+    private var presenter: HomePresenter
+    private var tableViewDataSource: HomeDataSource?
+
+    init(interector: HomeInteractor, router: HomeRouter, presenter: HomePresenter) {
+        self.interector = interector
+        self.presenter = presenter
+        self.router = router
+        super.init(nibName: "HomeViewController", bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+       fatalError("init(coder:) has not been implemented")
+    }
+  
+  // MARK: - View lifecycle
+  
+    
+    override func viewDidLoad() {
+        
+        populateInformations()
+        setupView()
+            
+       }
+    
+    private func setupView() {
+           presenter.viewController = self
+           
+           HomeDataSource.setupHome(tableView: tableview)
+           tableViewDataSource = HomeDataSource(presenter: presenter)
+           tableview.dataSource = tableViewDataSource
+           tableview.delegate = tableViewDataSource
+       }
+  
+  // MARK: - PopulateInformations
+  
+  func populateInformations(){
+    let request = Home.Request(userId: interector.user.userId)
+    interector.getInfoStatements(request: request)
+  }
+  
+    //MARK: - IBAction
+    
+    
+    @IBAction func logout(_ sender: Any) {
+        interector.removeUserFromRealm()
+        router.routeToLogin(home: self)
+    }
+    
+    
+    
+  func displaySomething(viewModel: Home.ViewModel){
+    userNameLb.text = viewModel.response.user!.name
+    userAccontLb.text = viewModel.response.user!.account
+    userBalanceLb.text = viewModel.response.user!.balance
+    tableview.reloadData()
     
   }
-  
-  required init?(coder aDecoder: NSCoder){
-    super.init(coder: aDecoder)
-  }
-  
-  // MARK: View lifecycle
-  
-  override func viewDidLoad()
-  {
-    super.viewDidLoad()
-    doSomething()
-  }
-  
-  // MARK: Do something
-  
-  //@IBOutlet weak var nameTextField: UITextField!
-  
-  func doSomething()
-  {
-    let request = Home.Request()
     
-  }
-  
-  func displaySomething(viewModel: Home.ViewModel)
-  {
-    //nameTextField.text = viewModel.name
-  }
+    
+    
+ 
 }

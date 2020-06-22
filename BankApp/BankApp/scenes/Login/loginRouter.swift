@@ -14,7 +14,7 @@ import Foundation
 import UIKit
 
 @objc protocol LoginRoutingLogic {
-    func routeToSomewhere(login: LoginViewController, user: UserRealm)
+    func routeToHome(login: LoginViewController, user: UserRealm)
 }
 
 protocol LoginDataPassing {
@@ -22,9 +22,6 @@ protocol LoginDataPassing {
 }
 
 class LoginRouter: NSObject, LoginRoutingLogic, LoginDataPassing {
-    func routeToSomewhere(login: LoginViewController, user: UserRealm) {
-        
-    }
     
     var dataStore: LoginDataStore?
 
@@ -35,9 +32,14 @@ class LoginRouter: NSObject, LoginRoutingLogic, LoginDataPassing {
     }
   // MARK: Routing and navigation
 
-//    func routeToSomewhere(login: LoginViewController, user: UserRealm) {
-//        login.dismiss(animated: false, completion: nil)
-//        let homeViewController = HomeViewController(interactor: HomeInteractor(worker: HomeRepository(), user: user), router: HomeRouter(navigationController: navigationController), presenter: HomePresenter())
-//        navigationController.present(homeViewController, animated: false, completion: nil)
-//  }
+    func routeToHome(login: LoginViewController, user: UserRealm) {
+        login.dismiss(animated: true, completion: nil)
+        login.modalPresentationStyle = .fullScreen
+        login.transitioningDelegate = nil
+        let homeViewController = HomeViewController(interector: HomeInteractor(repository: HomeRepository(), user: user), router: HomeRouter(navigationController: navigationController), presenter: HomePresenter())
+        let top = UIApplication.shared.windows.first?.rootViewController
+        
+        top?.present(homeViewController, animated: true, completion: nil)
+        
+  }
 }

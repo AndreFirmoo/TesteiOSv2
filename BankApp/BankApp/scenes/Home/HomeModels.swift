@@ -11,6 +11,7 @@
 //
 
 import UIKit
+import Alamofire
 
 enum Home {
   // MARK: Use cases

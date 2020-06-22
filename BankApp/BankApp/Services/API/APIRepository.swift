@@ -16,6 +16,7 @@ class APIRepository{
         return AF.request(route)
             .responseDecodable (decoder: decoder) { (response: DataResponse<T,AFError>) in
                 completion(response.result)
+                
         }
     }
 }

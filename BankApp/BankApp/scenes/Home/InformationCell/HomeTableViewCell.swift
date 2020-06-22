@@ -10,6 +10,8 @@ import UIKit
 
 class HomeTableViewCell: UITableViewCell {
 
+    
+    @IBOutlet weak var view: UIView!
     @IBOutlet weak var itemTypeLabel: UILabel!
     @IBOutlet weak var itemTitleLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!

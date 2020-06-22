@@ -11,10 +11,24 @@
 //
 
 import UIKit
+import Alamofire
 
-class HomeRepository
-{
-  func getStatementsList()
-  {
-  }
+protocol HomeRepositoryProtocol {
+    func getRequestStatementsList(request: Home.Request, completion: @escaping (Result<StatementList,AFError>)->Void)
+}
+
+class HomeRepository: HomeRepositoryProtocol{
+    
+    static let shared = HomeRepository()
+    private lazy var apiRepository: APIRepository = {
+        let maneger = APIRepository()
+        return maneger
+    }()
+    
+    func getRequestStatementsList(request: Home.Request, completion: @escaping (Result<StatementList, AFError>) -> Void) {
+        apiRepository.createRequest(route: API.home(userId: request.userId), completion: completion)
+        
+    }
+    
+  
 }

@@ -11,6 +11,7 @@
 //
 
 import UIKit
+import Realm
 
 protocol LoginDisplay: class
 {
@@ -69,7 +70,7 @@ class LoginViewController: UIViewController{
     
     func login(){
         if let user = interactor.user{
-            router.routeToSomewhere(login: self, user: user)
+            router.routeToHome(login: self, user: user)
         }
     }
     
@@ -85,7 +86,9 @@ extension LoginViewController: LoginDisplay{
         
     }
     func displayHome(viewModel: Login.ViewModel){
-        
+        if let user = interactor.user{
+            router.routeToHome(login: self, user: user)
+        }
     }
     
     

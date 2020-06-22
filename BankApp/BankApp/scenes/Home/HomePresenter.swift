@@ -14,17 +14,18 @@ import UIKit
 
 protocol HomePresentationLogic
 {
-  func presentSomething(response: Home.Response)
+  func presentInformation(response: Home.Response)
 }
 
 class HomePresenter: HomePresentationLogic
 {
-  weak var viewController: HomeDisplayLogic?
+    weak var viewController: HomeDisplayLogic?
+    var statements: [Statement] = []
   
   // MARK: Do something
   
-  func presentSomething(response: Home.Response)
-  {
+  func presentInformation(response: Home.Response){
+   statements = response.statementsList?.statementList ?? []
     let viewModel = Home.ViewModel(response: response)
     viewController?.displaySomething(viewModel: viewModel)
   }

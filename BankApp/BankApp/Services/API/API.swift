@@ -26,14 +26,20 @@ enum API:URLRequestConvertible{
             
         }
     }
-    
+    private var method: HTTPMethod {
+           switch self {
+           case .login: return .post
+           case .home: return .get
+           }
+       }
     
     
     func asURLRequest() throws -> URLRequest {
         let baseUrlString = "https://bank-app-test.herokuapp.com/api/"
         let url = try baseUrlString.asURL()
         var urlRequest = URLRequest(url: url.appendingPathComponent(path))
-        urlRequest.httpMethod = HTTPMethod.post.rawValue
+        
+        urlRequest.httpMethod = method.rawValue
         
         urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         

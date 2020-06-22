@@ -9,6 +9,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController" customModule="BankApp" customModuleProvider="target">
             <connections>
+                <outlet property="tableview" destination="SX5-Ry-CxK" id="RU4-H1-jpi"/>
+                <outlet property="userAccontLb" destination="yOA-ut-qQM" id="Q08-IN-TKx"/>
+                <outlet property="userBalanceLb" destination="yRX-mH-RXK" id="bIG-8R-MdR"/>
+                <outlet property="userNameLb" destination="62b-oy-zAp" id="YyX-9C-O4r"/>
                 <outlet property="view" destination="iN0-l3-epB" id="AE5-II-KPI"/>
             </connections>
         </placeholder>
@@ -53,6 +57,9 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AkQ-XW-MKI">
                             <rect key="frame" x="370" y="22" width="27" height="27"/>
                             <state key="normal" image="logout"/>
+                            <connections>
+                                <action selector="logout:" destination="-1" eventType="touchUpInside" id="wDr-EK-nEp"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -62,6 +69,7 @@
                         <constraint firstItem="BUk-bI-it3" firstAttribute="top" secondItem="yOA-ut-qQM" secondAttribute="bottom" constant="32" id="A7Y-TS-qym"/>
                         <constraint firstAttribute="bottom" secondItem="yRX-mH-RXK" secondAttribute="bottom" constant="35" id="Ab9-st-yNV"/>
                         <constraint firstItem="yRX-mH-RXK" firstAttribute="top" secondItem="BUk-bI-it3" secondAttribute="bottom" constant="19" id="E2z-rd-o26"/>
+                        <constraint firstAttribute="height" constant="258" id="G8U-6H-TUe"/>
                         <constraint firstItem="62b-oy-zAp" firstAttribute="top" secondItem="khM-aQ-9B9" secondAttribute="top" constant="20" id="GXK-Ym-3US"/>
                         <constraint firstItem="yOA-ut-qQM" firstAttribute="leading" secondItem="khM-aQ-9B9" secondAttribute="leading" constant="22" id="H8E-Rm-okA"/>
                         <constraint firstItem="62b-oy-zAp" firstAttribute="leading" secondItem="khM-aQ-9B9" secondAttribute="leading" constant="22" id="N1R-Tw-EfP"/>
@@ -84,7 +92,7 @@
                     <rect key="frame" x="0.0" y="310" width="414" height="552"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="552" id="kc1-RF-V5v"/>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="552" id="kc1-RF-V5v"/>
                     </constraints>
                 </tableView>
             </subviews>

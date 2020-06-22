@@ -64,10 +64,7 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore
             self?.presenter?.presentError(error: error)
         }
     })
-    
-//    let response = Login
-//        .Response(user: name)
-//    presenter?.presentSomething(response: response)
+
   }
     
     private func setupResponse( response: Login.Response, userName: String){

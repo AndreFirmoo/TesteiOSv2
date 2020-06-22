@@ -11,20 +11,23 @@
 //
 
 import UIKit
-
-@objc protocol HomeRoutingLogic
-{
-  //func routeToSomewhere(segue: UIStoryboardSegue?)
+@objc protocol HomeRoutingLogic {
+  func routeToLogin(home: HomeViewController)
 }
 
-protocol HomeDataPassing
-{
-  var dataStore: HomeDataStore? { get }
-}
+class HomeRouter: NSObject, HomeRoutingLogic {
+    
+    var navigationController: UIViewController
+    
+    init(navigationController: UIViewController) {
+        self.navigationController = navigationController
+    }
 
-class HomeRouter: NSObject, HomeRoutingLogic, HomeDataPassing
-{
-  weak var viewController: HomeViewController?
-  var dataStore: HomeDataStore?
-  
+  // MARK: Routing
+    func routeToLogin(home: HomeViewController) {
+        home.dismiss(animated: true, completion: nil)
+        
+//        let login = LoginViewController(interactor: LoginInteractor(repository: LoginRepository()), router: LoginRouter(navigationController: navigationController as! UINavigationController), presenter: LoginPresenter())
+//        navigationController.present(login, animated: false, completion: nil)
+    }
 }
